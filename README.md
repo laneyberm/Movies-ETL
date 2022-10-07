@@ -85,13 +85,13 @@ Amazing Prime loves the dataset and wants to keep it updated on a daily basis. B
 
 
 ### Movies Query
-<img src="https://github.com/laneyberm/Movies-ETL/blob/main/movies_query.png" width="300">
+<img src="https://github.com/laneyberm/Movies-ETL/blob/main/movies_query.png" width="150">
 
 - 
 - 
 
 ### Ratings Query
-<img src="https://github.com/laneyberm/Movies-ETL/blob/main/ratings_query.png" width="300">
+<img src="https://github.com/laneyberm/Movies-ETL/blob/main/ratings_query.png" width="150">
 
 - 
 - 
