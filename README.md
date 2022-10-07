@@ -8,7 +8,7 @@ We created a code and refactored the code to create one function that takes in t
 
 In the Extract phase, data is pulled from external or internal sources, possibly disparate. The sources could be flat files, scraped webpages in HTML or JavaScript Object Notation (JSON) format, SQL tables, or even streams of sensor data. The extracted data is held in a staging area in between the data sources and data targets.
 
-After data is extracted, there are many transformations it may need to go through. The data may need to be filtered, parsed, translated, sorted, interpolated, pivoted, summarized, aggregated, merged, or more. The goal is to create a consistent structure in the data. Without a consistent structure in our data, it's almost impossible to perform any meaningful analysis.
+After data is extracted, there are many transformations it may need to go through. The data may need to be filtered, parsed, translated, sorted, interpolated, pivoted, summarized, aggregated, merged, or more. The goal is to create a consistent structure in the data. 
 
 The transformation phase can be accomplished with Python and Pandas, pure SQL, or specialized ETL tools like Apache Airflow or Microsoft SQL Server Integrated Services (SSIS). Python and Pandas are especially good for prototyping an ETL transformation because they provide flexibility and interactivity (especially in a Jupyter Notebook), without enforcing any complicated frameworks. We will use Python and Pandas to explore, document, and perform our data transformation.
 
@@ -24,41 +24,29 @@ Lastly, we created an automated pipeline, by converting the Jupyter Notebooks to
 ## Process
 ### Data Cleaning
 We used a data-cleaning strategy and iterative process based on three key steps: plan, inspect, execute. 
-- inspect our data and identify a problem.
-- make a plan and decide whether it is worth the time and effort to fix it
-- execute the repair
+- Inspect our data and identify a problem.
+- Make a plan and decide whether it is worth the time and effort to fix it
+- Execute the repair
 
-Early iterations focus on making the data easier to investigate: 
-- deleting obviously bad data
-- removing superfluous columns (e.g., columns with only one value or missing an overwhelming amount of data) 
-- removing duplicate rows 
-- consolidating columns
-- reshaping the data if necessary
+Early iterations focused on the following to make the data easier to investigate: 
+- Deleting obviously bad data
+- Removing superfluous columns (e.g., columns with only one value or missing an overwhelming amount of data) 
+- Removing duplicate rows 
+- Consolidating columns
+- Reshaping the data if necessary
 
-The Wikipedia scraped data is especially messy. As much as editors try to be consistent, each page can be edited by a different person. Additionally, because the movie data comes from the sidebar, different movies can have different columns. We performed the following data-cleaning tasks:
+The Wikipedia scraped data wass especially messy. As much as editors try to be consistent, each page can be edited by a different person. Additionally, because the movie data comes from the sidebar, different movies can have different columns. We performed the following data-cleaning tasks:
 - Created a process to turn our JSON data into a reasonable DataFrame
 - Removed duplicate rows
 - Ensured that every movie contained an unique IMDb ID to merge with the Kaggle data
 - Extract the IMDb ID from the IMDb link
 
 ### ETL
-In the Extract phase, data is pulled from the Wikipedia and Kaggle data from their respective files. The extracted data is held in a staging area in between the data sources and data targets. We extracted scraped Wikipedia data stored as a JSON, and Kaggle data stored in CSVs. Transform the datasets by cleaning them up and joining them together. load the cleaned dataset into a SQL database
+We extracted scraped Wikipedia data stored as a JSON, and Kaggle data stored in CSVs, transformed the datasets by cleaning them up and joining them together and load the cleaned dataset into a SQL database.
 
-To extract the ID, we need to learn regular expressions. Regular expressions are just strings of characters that are used as a search pattern. They are used to test if strings are in a specific format or contain a substring in a specific format, to extract pertinent information from strings while discarding unnecessary information, and to perform complicated replacements of substrings. You knew this day would come: the day when you conquered regular expressions. While they may sound a bit underwhelming, regular expressions are actually quite powerful. (You could almost say the outsized impact they will allow you to have on your dataset is irregular.) Puns aside, you know a big reason Britta trusted you with this dataset is because you wouldn't shy away from learning how to use and apply regular expressions. Even though there's still more to regular expressions, we now have enough for us to parse the information in our dataset, so let's get back to it. Remember, there are two main forms the box office data is written in: "$123.4 million" (or billion), and "$123,456,789." We're going to build a regular expression for each form, and then see what forms are left over.
+In the extraction process, we used regular expressions (Regex) to test for search patterns. We found competing columns between the Wikipedia and Kaggle data. In the Transform step, we fixed the issues below:
 
-Luckily, you already did a lot of the heavy lifting for parsing the budget data when you parsed the box office data. You'll use the same pattern matches and see how many budget values are in a different form. Luckily, we've already done a lot of the heavy lifting for parsing the budget data when we parsed the box office data. We'll use the same pattern matches and see how many budget values are in a different form. First, we need to preprocess the budget data, just like we did for the box office data.
-
-The Kaggle data that Britta found is much more structured, but it still requires some cleaning, including converting strings to correct data types. Therefore, your next task is to clean the Kaggle data.
-
-Now that the Wikipedia data and Kaggle data are cleaned up and in tabular formats with the right data types for each column, Britta can join them together. However, after they're joined, the data still needs to be cleaned up a bit, especially where Kaggle and Wikipedia data overlap. One of the things we always want to look out for after we've merged data is redundant columns. There are seven pairs of columns that have redundant information. We'll look at each pair of columns and decide how to handle the data.
-
-There are a few options when dealing with redundant data. We'll consider two. The simplest is to just drop one of the competing columns, but sometimes that means a loss of good information. Sometimes, one column will have data where the other has missing data, and vice versa. In that case, we'd want the other option: fill in the gaps using both columns.
-
-Below is the list of competing columns. We'll fill in the resolution to each pair as we go along. We'll hold off on implementing the resolutions until we make a decision for each pair because if we did, we might inadvertently remove data that could be helpful in making a later decision.
-
-Britta wants to include the rating data with the movie data, but it's a very large dataset. She wants to reduce the ratings data to a useful summary of rating information for each movie, and then make the full dataset available to the hackathon participants if they decide they need more granular rating information.
-
-For each movie, Britta wants to include the rating data, but the rating dataset has so much information that it's too unwieldy to use all of it. We could calculate some basic statistics like the mean and median rating for each movie, but a more useful summary is just to count how many times a movie received a given rating. This way, someone who wants to calculate statistics for the dataset would have all the information they need. 
+<img src="https://github.com/laneyberm/Movies-ETL/blob/main/competing_columns.png" width="450">
 
 We'll include the raw ratings data if the hackathon participants want to do more in-depth analysis, such as comparing across users, but having the rating counts for each movie is easy enough to do. Plus, it will enable the hackathon participants to calculate statistics on their own without having to work with a dataset containing 26-million rows. And we're done—we just finished the Transform step in ETL! Now all that's left is loading our tables into SQL.
 
