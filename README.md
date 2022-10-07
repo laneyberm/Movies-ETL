@@ -48,37 +48,11 @@ In the extraction process, we used regular expressions (Regex) to test for searc
 
 <img src="https://github.com/laneyberm/Movies-ETL/blob/main/competing_columns.png" width="450">
 
-We'll include the raw ratings data if the hackathon participants want to do more in-depth analysis, such as comparing across users, but having the rating counts for each movie is easy enough to do. Plus, it will enable the hackathon participants to calculate statistics on their own without having to work with a dataset containing 26-million rows. And we're done—we just finished the Transform step in ETL! Now all that's left is loading our tables into SQL.
+We added raw ratings data from MovieLens, a dataset containing 26-million rows, so we can complete in-depth analysis and calculate statistics without having to open the 26 million dataset. We moved the data from Pandas into a PostgreSQL database and load it into a SQL database. We created a new database and used the built-in to_sql() method in Pandas to create a table for our merged movie data. We also imported the raw ratings data into its own table. While importing the Movie Data, ratings data is too large to import in one statement, so it was to be divided into "chunks" of data. We re import the CSV using the chunksize= parameter in read_csv(). This creates an iterable object, so we can make a for loop and append the chunks of data to the new rows to the target SQL table. 
 
-
-Amazing Prime has decided the easiest way to make the data accessible for the hackathon is to provide a SQL database to the participants. Britta needs to move the data from Pandas into a PostgreSQL database.
-
-Now that we've extracted and transformed our data, it's time to load it into a SQL database. We're going to create a new database and use the built-in to_sql() method in Pandas to create a table for our merged movie data. We'll also import the raw ratings data into its own table.
-
-Start pgAdmin and expand your local servers in the left-hand pane so you can see the Databases section. Right-click on Databases and select Create followed by Database. We need to import create_engine from the sqlalchemy module. Don't forget to add this import to the first cell so that all your imports are in one spot. Now we can create the database engine that will allow Pandas to communicate with our SQL server.
-
-This is all the information that SQLAlchemy needs to create a database engine.SQLAlchemy handles connections to different SQL databases and manages the conversion between data types. The way it handles all the communication and conversion is by creating a database engine. Import the Movie Data. The ratings data is too large to import in one statement, so it has to be divided into "chunks" of data. To do so, we'll need to reimport the CSV using the chunksize= parameter in read_csv(). This creates an iterable object, so we can make a for loop and append the chunks of data to the new rows to the target SQL table. 
-
-If everything looks good, you are done. You just extracted really messy and almost unusable data, combed through it carefully to transform it, and then loaded it into a SQL database. Now the hackathon has a reliable, clean dataset just begging to be analyzed. Britta will definitely appreciate the hard work you put in.
-
-Congrats on performing your first ETL process. By the way, ETL isn't the only way to create a data pipeline (even though it's the most common). There is also the Extract, Load, and Transform (ELT) paradigm.
-
-With ELT, data is stored as unstructured data in a data lake and transformed when analyses are performed. This requires very powerful analytical tools to perform the transformation tasks quickly, where ETL frontloads the transformation to make analyses easier to perform.
-
-## Results
-
-
-### Movies Query
+We verified that the data contained 6051 movies and 26,0024,289 ratings to ensure all the data was loaded to the tables in SQL. 
 <img src="https://github.com/laneyberm/Movies-ETL/blob/main/movies_query.png" width="150">
-
-- 
-- 
-
-### Ratings Query
 <img src="https://github.com/laneyberm/Movies-ETL/blob/main/ratings_query.png" width="150">
 
-- 
-- 
+We extracted really messy and almost unusable data, combed through it carefully to transform it, and then loaded it into a SQL database. Now, Amazing Prime has a reliable, clean dataset just begging to be analyzed.
 
-## Summary
- 
