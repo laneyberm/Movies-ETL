@@ -23,21 +23,23 @@ Lastly, we created an automated pipeline, by converting the Jupyter Notebooks to
 
 ## Process
 ### Data Cleaning
-data-cleaning strategy. You're going to follow an iterative process based on three key steps: plan, inspect, execute. The iterative process for cleaning data can be broken down as follows:
+We used a data-cleaning strategy and iterative process based on three key steps: plan, inspect, execute. 
+- inspect our data and identify a problem.
+- make a plan and decide whether it is worth the time and effort to fix it
+- execute the repair
 
-First, we need to inspect our data and identify a problem.
-Once we've identified the problem, we need to make a plan and decide whether it is worth the time and effort to fix it.
-Finally, we execute the repair.
+Early iterations focus on making the data easier to investigate: 
+- deleting obviously bad data
+- removing superfluous columns (e.g., columns with only one value or missing an overwhelming amount of data) 
+- removing duplicate rows 
+- consolidating columns
+- reshaping the data if necessary
 
-Early iterations focus on making the data easier to investigate: deleting obviously bad data, removing superfluous columns (e.g., columns with only one value or missing an overwhelming amount of data), removing duplicate rows, consolidating columns, and reshaping the data if necessary.
-
-Our Wikipedia data is especially messy. As much as editors try to be consistent, each page can be edited by a different person. Besides, because the movie data comes from the sidebar, different movies can have different columns. However, after cleaning the data, the result will be a nice, organized table of data, where every row is a single movie. You'll start by investigating the data for errors.
-
-One of the easiest ways to find glaring errors is to just pretend as if there aren't any, and try to jump straight to the finish line. Eventually, we want to clean up the Wikipedia data into tabular data with rows and columns, so let's see what happens if we create a DataFrame from our raw data.
-
-Now that you've filtered out bad data, you need to clean up each movie entry so it's in a standard format. If you can make one process broad enough to handle every movie entry, you can apply that process repeatedly for every movie entry. For this task you will create a function.
-
-There are some data-cleaning tasks that are easier to perform on a DataFrame, such as removing duplicate rows. Luckily, we just created a process to turn our JSON data into a reasonable DataFrame. In fact, we'll start by removing duplicate rows. Since we're going to be using the IMDb ID to merge with the Kaggle data, we want to make sure that we don't have any duplicate rows, according to the IMDb ID. First, we need to extract the IMDb ID from the IMDb link.
+The Wikipedia scraped data is especially messy. As much as editors try to be consistent, each page can be edited by a different person. Additionally, because the movie data comes from the sidebar, different movies can have different columns. We performed the following data-cleaning tasks:
+- Created a process to turn our JSON data into a reasonable DataFrame
+- Removed duplicate rows
+- Ensured that every movie contained an unique IMDb ID to merge with the Kaggle data
+- Extract the IMDb ID from the IMDb link
 
 ### ETL
 In the Extract phase, data is pulled from the Wikipedia and Kaggle data from their respective files. The extracted data is held in a staging area in between the data sources and data targets. We extracted scraped Wikipedia data stored as a JSON, and Kaggle data stored in CSVs. Transform the datasets by cleaning them up and joining them together. load the cleaned dataset into a SQL database
