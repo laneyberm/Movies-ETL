@@ -50,9 +50,12 @@ In the extraction process, we used regular expressions (Regex) to test for searc
 
 We added raw ratings data from MovieLens, a dataset containing 26-million rows, so we can complete in-depth analysis and calculate statistics without having to open the 26 million dataset. We moved the data from Pandas into a PostgreSQL database and load it into a SQL database. We created a new database and used the built-in to_sql() method in Pandas to create a table for our merged movie data. We also imported the raw ratings data into its own table. While importing the Movie Data, ratings data is too large to import in one statement, so it was to be divided into "chunks" of data. We re import the CSV using the chunksize= parameter in read_csv(). This creates an iterable object, so we can make a for loop and append the chunks of data to the new rows to the target SQL table. 
 
+<img src="https://github.com/laneyberm/Movies-ETL/blob/main/importing_rows.png" width="500">
+
 We verified that the data contained 6051 movies and 26,0024,289 ratings to ensure all the data was loaded to the tables in SQL. 
 <img src="https://github.com/laneyberm/Movies-ETL/blob/main/movies_query.png" width="150">
 <img src="https://github.com/laneyberm/Movies-ETL/blob/main/ratings_query.png" width="150">
 
+## Conclusion
 We extracted really messy and almost unusable data, combed through it carefully to transform it, and then loaded it into a SQL database. Now, Amazing Prime has a reliable, clean dataset just begging to be analyzed.
 
